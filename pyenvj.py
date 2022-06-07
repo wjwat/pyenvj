@@ -6,7 +6,7 @@ import os
 import sys
 
 
-def main(env_vars, quiet=False):
+def main(env_vars, quiet=False, pretty=False):
     temp_vars = {}
 
     if len(env_vars) == 0:
@@ -23,7 +23,9 @@ def main(env_vars, quiet=False):
                         file=sys.stderr,
                     )
 
-    print(json.dumps(temp_vars))
+    out = json.dumps(temp_vars, indent=4) if pretty else json.dumps(temp_vars)
+
+    print(out)
     return
 
 
@@ -34,6 +36,12 @@ def get_args():
         "--quiet",
         action="store_true",
         help="Suppress error messages when environment variable not found",
+    )
+    parser.add_argument(
+        "-p",
+        "--pretty",
+        action="store_true",
+        help="Print vars with indentation",
     )
     parser.add_argument(
         "env_vars",
